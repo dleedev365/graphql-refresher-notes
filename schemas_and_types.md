@@ -1,203 +1,158 @@
-## Schemas and Types
+# Schemas and Types
 
-- Depending on libraries, types/fields/resolver functions might come built-in or allow you to define types/fields more ergonomically via schema definition language (SDL), then write the resolver functions for the corresponding fields separately.
+## Overview
 
-  - Example:
+- Depending on libraries, types/fields/resolver functions might come built-in or allow you to define types/fields more ergonomically via schema definition language (SDL). You can then write resolver functions for the corresponding fields separately.
 
-  ```graphql
-  type <object_type> {
-      <field_1>: String! # non-null type
-      <field_2>: [Episode!]!
-  }
-  ```
-
-  - String is one of the built-in scalar types.
-    - Scalar types cannot have sub-selections; they are "leaves" or "end" of the query.
-      - Examples: Int, Float, String, Boolean, ID.
-  - The exclamation mark guarantees non-null values or arrays with at least one element.
+  - **Example**:
+    ```graphql
+    type <object_type> {
+        <field_1>: String! # non-null type
+        <field_2>: [Episode!]!
+    }
+    ```
+    - `String` is one of the built-in scalar types.
+    - Scalar types cannot have sub-selections; they are "leaves" or the "end" of the query.
+      - **Examples**: `Int`, `Float`, `String`, `Boolean`, `ID`.
+    - The exclamation mark (`!`) guarantees non-null values or arrays with at least one element.
 
 - Schemas must support query, mutation, and subscription operations.
 
-  - Example:
-
-  ```graphql
-  schema {
-    query: MyQueryType
-    mutation: MyMutationType
-    subscription: MySubscriptionType
-  }
-  ```
+  - **Example**:
+    ```graphql
+    schema {
+      query: MyQueryType
+      mutation: MyMutationType
+      subscription: MySubscriptionType
+    }
+    ```
 
 - Custom scalar types can be created in most GraphQL service implementations.
-  - Example:
-  ```graphql
-  scalar Date
-  ```
-  - It is up to the implementation to define how the type should be serialized/deserialized and validated.
-    - Example: Keeping a "Date" type as an integer timestamp.
+  - **Example**:
+    ```graphql
+    scalar Date
+    ```
+  - It is up to the implementation to define how the type should be serialized, deserialized, and validated.
+    - **Example**: Keeping a "Date" type as an integer timestamp.
 
-### Enum Types
+---
+
+## Enum Types
 
 - Enum types define a set of expected outputs, reducing human error.
-- Example:
-  ```graphql
-  enum Episode {
-    NEWHOPE
-    EMPIRE
-    JEDI
-  }
-  ```
+  - **Example**:
+    ```graphql
+    enum Episode {
+      NEWHOPE
+      EMPIRE
+      JEDI
+    }
+    ```
 
-### Type Modifiers
+---
+
+## Type Modifiers
 
 - By default, types are nullable and singular in GraphQL.
 
-#### Non-Null
+### Non-Null Types
 
-- Example:
+- Use the `!` symbol to mark fields as non-nullable.
 
-  ```graphql
-  type Character {
-    name: String!
-  }
+  - **Example**:
 
-  {
-    droid(id: null) {
-      name
+    ```graphql
+    type Character {
+      name: String!
     }
-  }
-  ```
 
-#### List
+    {
+      droid(id: null) {
+        name
+      }
+    }
+    ```
 
-- Examples:
+### List Types
 
-  ```graphql
-  myField: [String!]  # Example 1
+- Lists are used to define arrays.
 
-  myField: null       # Valid
-  myField: []         # Valid
-  myField: ['a', 'b'] # Valid
-  myField: ['a', null, 'b'] # Invalid
+  - **Examples**:
 
-  myField: [String!]  # Example 2
+    ```graphql
+    myField: [String]      # Example 1
+    myField: [String!]     # Example 2
+    myField: [String!]!    # Example 3
+    ```
 
-  myField: null       # Error
-  myField: []         # Valid
-  myField: ['a', 'b'] # Valid
-  myField: ['a', null, 'b'] # Valid
+  - **Validation Scenarios**:
+    ```graphql
+    myField: [String]      # Valid: null, [], ['a'], ['a', null, 'b']
+    myField: [String!]     # Valid: [], ['a'], ['a', 'b'], ['a', null, 'b']
+    myField: [String!]!    # Valid: [], ['a'], ['a', 'b']; Invalid: null, ['a', null, 'b']
+    ```
 
-  myField: [String!]! # Example 3
+---
 
-  myField: null       # Error
-  myField: []         # Valid
-  myField: ['a', 'b'] # Valid
-  myField: ['a', null, 'b'] # Error
-  ```
+## Abstract Types
 
-### Abstract Types: Interface Type
+### Interface Type
 
-- Useful for returning objects or sets of objects that might be of several different types.
+- Interfaces are useful for returning objects or sets of objects that might be of several different types.
 
-  - Example:
+  - **Example**:
 
-  ```graphql
-  interface Character {
-    id: ID!
-    name: String!
-  }
+    ```graphql
+    interface Character {
+      id: ID!
+      name: String!
+    }
 
-  type Human implements Character {
-    id: ID!
-    name: String!
-    starships: [Starship]
-    totalCredits: Int
-  }
+    type Human implements Character {
+      id: ID!
+      name: String!
+      starships: [Starship]
+      totalCredits: Int
+    }
 
-  type Droid implements Character {
-    id: ID!
-    name: String!
-    primaryFunction: String
-  }
-  ```
+    type Droid implements Character {
+      id: ID!
+      name: String!
+      primaryFunction: String
+    }
+    ```
 
 ### Inline Fragments
 
-- Used to ask for fields on specific object types.
-  - Example:
-  ```graphql
-  hero(episode: JEDI) {
-    name
-    ... on Droid {
-      primaryFunction
+- Used to query fields on specific object types.
+  - **Example**:
+    ```graphql
+    hero(episode: JEDI) {
+      name
+      ... on Droid {
+        primaryFunction
+      }
     }
-  }
-  ```
-  - The "hero" field returns a Character, which could be either "Human" or "Droid."
+    ```
 
 ### Union Types
 
-- Cannot define shared fields among the constituent types.
+- Union types group multiple types without shared fields.
 
-  - Example:
+  - **Example**:
 
-  ```graphql
-  union SearchResult = Human | Droid | Starship
-
-  # Operation
-  search(text: "an") {
-    __typename
-    ... on Human {
-      name
-      height
-    }
-    ... on Droid {
-      name
-      primaryFunction
-    }
-    ... on Starship {
-      name
-      length
-    }
-  }
-
-  # Response
-  {
-    "data": {
-      "search": [
-        {
-          "__typename": "Human",
-          "name": "Han Solo",
-          "height": 1.8
-        },
-        {
-          "__typename": "Human",
-          "name": "Leia Organa",
-          "height": 1.5
-        },
-        {
-          "__typename": "Starship",
-          "name": "TIE Advanced x1",
-          "length": 9.2
-        }
-      ]
-    }
-  }
-  ```
-
-  - `__typename` is a special meta-field that resolves to the name of the type.
-  - Shared fields from a common interface can be queried once for multiple types.
-    - Example:
     ```graphql
+    union SearchResult = Human | Droid | Starship
+
+    # Query
     search(text: "an") {
       __typename
-      ... on Character {
-        name
-      }
       ... on Human {
+        name
         height
       }
       ... on Droid {
+        name
         primaryFunction
       }
       ... on Starship {
@@ -205,86 +160,117 @@
         length
       }
     }
+
+    # Response
+    {
+      "data": {
+        "search": [
+          {
+            "__typename": "Human",
+            "name": "Han Solo",
+            "height": 1.8
+          },
+          {
+            "__typename": "Human",
+            "name": "Leia Organa",
+            "height": 1.5
+          },
+          {
+            "__typename": "Starship",
+            "name": "TIE Advanced x1",
+            "length": 9.2
+          }
+        ]
+      }
+    }
     ```
 
-### Input Object Types
+  - `__typename` is a special meta-field that resolves to the name of the type.
 
-- Defined with the "input" keyword instead of "type."
+---
 
-  - Example:
+## Input Object Types
 
-  ```graphql
-  # Schema
-  input ReviewInput {
-    stars: Int!
-    commentary: String
-  }
+- Input types are used to pass complex arguments into queries or mutations.
 
-  type Mutation {
-    createReview(episode: Episode, review: ReviewInput): Review
-  }
+  - **Example**:
 
-  # Operation
-  mutation {
-    createReview {
-      episode: JEDI
-      review: {
-        stars: 5
-        commentary: "This is a great movie!"
-      }
-    } {
-      stars
-      commentary
+    ```graphql
+    # Schema
+    input ReviewInput {
+      stars: Int!
+      commentary: String
     }
-  }
 
-  # Response
-  {
-    "data": {
-      "createReview": {
-        "stars": 5,
-        "commentary": "This is a great movie!"
+    type Mutation {
+      createReview(episode: Episode, review: ReviewInput): Review
+    }
+
+    # Query
+    mutation {
+      createReview {
+        episode: JEDI
+        review: {
+          stars: 5
+          commentary: "This is a great movie!"
+        }
+      } {
+        stars
+        commentary
       }
     }
-  }
-  ```
 
-### Directives
+    # Response
+    {
+      "data": {
+        "createReview": {
+          "stars": 5,
+          "commentary": "This is a great movie!"
+        }
+      }
+    }
+    ```
+
+---
+
+## Directives
 
 - Directives modify parts of a GraphQL schema or operation using a `@` character followed by the directive name.
 
-  - "Type system directives" annotate types, fields, and arguments for validation or execution changes.
+### Type System Directives
 
-    - Example:
+- Used to annotate types, fields, and arguments for validation or execution changes.
+
+  - **Example**:
 
     ```graphql
-    # For SDL-supported implementations
     type User {
       fullName: String
       name: String @deprecated(reason: "Use 'fullName'.")
     }
 
-    # Underlying definition
     directive @deprecated(
       reason: String = "No longer supported!"
     ) on FIELD_DEFINITION | ENUM_VALUE
     ```
 
-  - Specify where directives may be used, and custom directives can be defined.
+---
 
-### Arguments
+## Arguments
 
-- Arguments can be optional or required and are passed by name specifically.
-  - Example:
-  ```graphql
-  type <object_type> {
-    length(unit: LengthUnit = METER): Float
-  }
-  ```
-  - If the "unit" argument is not passed, it defaults to METER.
+- Arguments can be optional or required and are passed by name.
+  - **Example**:
+    ```graphql
+    type <object_type> {
+      length(unit: LengthUnit = METER): Float
+    }
+    ```
+  - If the `unit` argument is not passed, it defaults to `METER`.
 
-### Documentation
+---
 
-- Add descriptions to your schema:
+## Documentation
+
+- Add descriptions to your schema for better clarity:
   - Multi-line: `""" <description> """`
   - Single-line: `" <description> "` or `# <description>`
