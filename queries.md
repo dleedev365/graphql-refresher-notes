@@ -28,16 +28,16 @@
 
 - **Using Aliases**
 
-  ```graphql
-  query {
-    empireHero: hero(episode: EMPIRE) {
-      name
-    }
-    jediHero: hero(episode: JEDI) {
-      name
-    }
+```graphql
+query {
+  empireHero: hero(episode: EMPIRE) {
+    name
   }
-  ```
+  jediHero: hero(episode: JEDI) {
+    name
+  }
+}
+```
 
 ## Variables
 
@@ -49,22 +49,24 @@
   2. Declare `$variableName` as one of the variables accepted by the query.
   3. Pass `variableName: <value>` in the separate, transport-specific (e.g., JSON) variables dictionary.
 
-  ```graphql
-  # Operation
-  query hero($episode: Episode!) {
-      hero(episode: $episode) {
-          name
-          friends {
-              name
-          }
-      }
+```graphql
+# Operation
+query hero($episode: Episode!) {
+  hero(episode: $episode) {
+    name
+    friends {
+      name
+    }
   }
+}
+```
 
-  # Variables
-  {
-      "episode": "JEDI"
-  }
-  ```
+```graphql
+# Variables
+{
+    "episode": "JEDI"
+}
+```
 
 - All declared variables must be scalar, enum, or input object types.
 
@@ -73,78 +75,81 @@
 - Reusable units that let you construct sets of fields and include them in queries when needed.
 - Useful for splitting complex application data requirements into smaller chunks, especially when combining multiple UI components.
 
-  ```graphql
-  query {
-    leftComparison: hero(episode: EMPIRE) {
-      ...comparisonFields
-    }
-    rightComparison: hero(episode: JEDI) {
-      ...comparisonFields
-    }
+```graphql
+query {
+  leftComparison: hero(episode: EMPIRE) {
+    ...comparisonFields
   }
+  rightComparison: hero(episode: JEDI) {
+    ...comparisonFields
+  }
+}
 
-  fragment comparisonFields on Character {
+fragment comparisonFields on Character {
+  name
+  appearsIn
+  friends {
     name
-    appearsIn
-    friends {
-      name
-    }
   }
-  ```
+}
+```
 
 - Fragments can also access variables declared in the operation:
 
-  ```graphql
-  query HeroComparison($first: Int = 3) {
-      leftComparison: hero(episode: EMPIRE) {
-          ...comparisonFields
-      }
-      rightComparison: hero(episode: JEDI) {
-          ...comparisonFields
-      }
-  }
+```graphql
+query HeroComparison($first: Int = 3) {
+    leftComparison: hero(episode: EMPIRE) {
+        ...comparisonFields
+    }
+    rightComparison: hero(episode: JEDI) {
+        ...comparisonFields
+    }
+}
 
-  fragment comparisonFields on Character {
-      name
-      friendsConnection(first: $first) {
-          <field>
-      }
-  }
-  ```
+fragment comparisonFields on Character {
+    name
+    friendsConnection(first: $first) {
+        <field>
+    }
+}
+```
 
 ## Inline Fragments
 
 - Useful when you need to return a union type or interface. Inline fragments can access data on the underlying concrete type.
 
-  ```graphql
-  # Operation
-  query HeroForEpisode($ep: Episode!) {
-      hero(episode: $ep) {
-          name
-          ... on Droid {
-              primaryFunction
-          }
-          ... on Human {
-              height
-          }
-      }
+```graphql
+# Operation
+query HeroForEpisode($ep: Episode!) {
+  hero(episode: $ep) {
+    name
+    ... on Droid {
+      primaryFunction
+    }
+    ... on Human {
+      height
+    }
   }
+}
+```
 
-  # Variables
-  {
-      "ep": "JEDI"
-  }
+```graphql
+    # Variables
+    {
+        "ep": "JEDI"
+    }
+```
 
-  # Response
-  {
-      "data": {
-          "hero": {
-              "name": "R2-D2",
-              "primaryFunction": "Astromech"
-          }
-      }
+```json
+{
+  "data": {
+    "hero": {
+      "name": "R2-D2",
+      "primaryFunction": "Astromech"
+    }
   }
-  ```
+}
+```
 
 ## Directives
 
@@ -156,26 +161,29 @@
   ```graphql
   # Operation
   query Hero($episode: Episode, $withFriends: Boolean!) {
-      hero(episode: $episode) {
-          name
-          friends @include(if: $withFriends) {
-              name
-          }
+    hero(episode: $episode) {
+      name
+      friends @include(if: $withFriends) {
+        name
       }
+    }
   }
+  ```
 
+```graphql
   # Variables
   {
       "episode": "JEDI",
       "withFriends": false
   }
+```
 
-  # Response
-  {
-      "data": {
-          "hero": {
-              "name": "R2-D2"
-          }
-      }
+```json
+{
+  "data": {
+    "hero": {
+      "name": "R2-D2"
+    }
   }
-  ```
+}
+```
