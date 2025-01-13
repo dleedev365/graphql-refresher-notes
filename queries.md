@@ -50,7 +50,7 @@
   3. Pass `variableName: <value>` in the separate, transport-specific (e.g., JSON) variables dictionary.
 
   ```graphql
-  # Operation
+  // Operation
   query hero($episode: Episode!) {
       hero(episode: $episode) {
           name
@@ -60,7 +60,7 @@
       }
   }
 
-  # Variables
+  // Variables
   {
       "episode": "JEDI"
   }
@@ -117,7 +117,7 @@
 - Useful when you need to return a union type or interface. Inline fragments can access data on the underlying concrete type.
 
   ```graphql
-  # Operation
+  // Operation
   query HeroForEpisode($ep: Episode!) {
       hero(episode: $ep) {
           name
@@ -130,12 +130,12 @@
       }
   }
 
-  # Variables
+  // Variables
   {
       "ep": "JEDI"
   }
 
-  # Response
+  // Response
   {
       "data": {
           "hero": {
@@ -154,7 +154,7 @@
   - Examples: `@include(if: Boolean)`, `@skip(if: Boolean)`.
 
   ```graphql
-  # Operation
+  // Operation
   query Hero($episode: Episode, $withFriends: Boolean!) {
       hero(episode: $episode) {
           name
@@ -164,13 +164,13 @@
       }
   }
 
-  # Variables
+  // Variables
   {
       "episode": "JEDI",
       "withFriends": false
   }
 
-  # Response
+  // Response
   {
       "data": {
           "hero": {
