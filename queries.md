@@ -49,8 +49,9 @@ query {
   2. Declare `$variableName` as one of the variables accepted by the query.
   3. Pass `variableName: <value>` in the separate, transport-specific (e.g., JSON) variables dictionary.
 
+#### operation
+
 ```graphql
-# Operation
 query hero($episode: Episode!) {
   hero(episode: $episode) {
     name
@@ -61,10 +62,11 @@ query hero($episode: Episode!) {
 }
 ```
 
-```graphql
-# Variables
+#### variables
+
+```json
 {
-    "episode": "JEDI"
+  "episode": "JEDI"
 }
 ```
 
@@ -118,8 +120,9 @@ fragment comparisonFields on Character {
 
 - Useful when you need to return a union type or interface. Inline fragments can access data on the underlying concrete type.
 
+#### operation
+
 ```graphql
-# Operation
 query HeroForEpisode($ep: Episode!) {
   hero(episode: $ep) {
     name
@@ -133,12 +136,15 @@ query HeroForEpisode($ep: Episode!) {
 }
 ```
 
-```graphql
-    # Variables
-    {
-        "ep": "JEDI"
-    }
+#### variables
+
+```json
+{
+  "ep": "JEDI"
+}
 ```
+
+#### response
 
 ```json
 {
@@ -155,28 +161,31 @@ query HeroForEpisode($ep: Episode!) {
 
 - Directives dynamically change the structure and shape of queries using variables when executed **on the server**.
 - "Executable directives" can be attached to a field or fragment inclusion and affect the query execution as desired by the server.
+- Examples: `@include(if: Boolean)`, `@skip(if: Boolean)`.
 
-  - Examples: `@include(if: Boolean)`, `@skip(if: Boolean)`.
-
-  ```graphql
-  # Operation
-  query Hero($episode: Episode, $withFriends: Boolean!) {
-    hero(episode: $episode) {
-      name
-      friends @include(if: $withFriends) {
-        name
-      }
-    }
-  }
-  ```
+#### operation
 
 ```graphql
-  # Variables
-  {
-      "episode": "JEDI",
-      "withFriends": false
+query Hero($episode: Episode, $withFriends: Boolean!) {
+  hero(episode: $episode) {
+    name
+    friends @include(if: $withFriends) {
+      name
+    }
   }
+}
 ```
+
+#### variable
+
+```json
+{
+  "episode": "JEDI",
+  "withFriends": false
+}
+```
+
+#### response
 
 ```json
 {
