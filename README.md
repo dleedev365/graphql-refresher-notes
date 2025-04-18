@@ -17,3 +17,7 @@
   <li> <a href="./fundamentals/introspection.md">7. Introspection</a></lid>
   <li> <a href="./best_practices.md">8. Best Practices</a></lid>
 </ul>
+
+
+#### Additional Resources
+- https://graphql.com/
