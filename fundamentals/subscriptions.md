@@ -64,4 +64,4 @@ subscription FriendListUpdated($id: ID!) {
 
 ---
 
-<a href="./mutations.md">Prev: Mutations</a> | <a href="./validations_and_execution.md">Next: Validations & Execution</a>
+<a href="./mutations.md">Prev: Mutations</a> | <a href="./validation_and_execution.md">Next: Validation & Execution</a>
