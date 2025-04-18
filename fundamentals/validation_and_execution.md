@@ -99,3 +99,7 @@ function Human_starships(obj, args, context, info) {
 ```
 
 - GraphQL will wait for all of these promises concurrently before continuing, and when left with a list of objects, it will continue yet again to load "name" field on each of these items concurrently.
+
+---
+
+<a href="./subscriptions.md">Prev: Subscriptions</a> | <a href="./response.md">Next: Response</a>

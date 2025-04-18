@@ -10,7 +10,7 @@
 <ul>
   <li> <a href="./fundamentals/schemas_and_types.md">1. Schemas and Types</a></lid>
   <li> <a href="./fundamentals/queries.md">2. Queries</a></lid>
-  <li> <a href="./fundamentals/mutations.md">3. Mutation</a></lid>
+  <li> <a href="./fundamentals/mutations.md">3. Mutations</a></lid>
   <li> <a href="./fundamentals/subscriptions.md">4. Subscriptions</a></lid>
   <li> <a href="./fundamentals/validation_and_execution.md">5. Validation & Execution</a></lid>
   <li> <a href="./fundamentals/response.md">6. Response</a></lid>

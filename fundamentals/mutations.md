@@ -145,3 +145,7 @@ type Mutation {
 
 - While query fields are executed in parallel, **mutation fields run in series**. It's different from the notion of a "database transaction"
   - For example, there's no built-in support to revert a successful operations while other operations fail. Thus, a GraphQL API response may return "data" object and "errors" object for corresponding requests
+
+---
+
+<a href="./queries.md">Prev: Queries</a> | <a href="./subscriptions.md">Next: Subscriptions</a>

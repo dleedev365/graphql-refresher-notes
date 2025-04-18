@@ -275,3 +275,7 @@ type <object_type> {
 - Add descriptions to your schema for better clarity:
   - Multi-line: `""" <description> """`
   - Single-line: `" <description> "` or `# <description>`
+
+---
+
+<a href="../README.md">Prev: Home</a> | <a href="./queries.md">Next: Queries</a>

@@ -196,3 +196,7 @@ query Hero($episode: Episode, $withFriends: Boolean!) {
   }
 }
 ```
+
+---
+
+<a href="./schemas_and_types.md">Prev: Schemas and Types</a> | <a href="./mutations.md">Next: Mutations</a>
