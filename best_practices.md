@@ -163,3 +163,7 @@ query {
   }
 }
 ```
+
+---
+
+<a href="./fundamentals/introspection.md">Prev: Introspection</a> | <a href="./README.md">Next: Home</a>

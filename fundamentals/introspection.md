@@ -65,4 +65,4 @@ query {
 
 ---
 
-<a href="./response.md">Prev: Response</a>
+<a href="./response.md">Prev: Response</a> | <a href="../best_practices.md">Next: Best Practices</a>

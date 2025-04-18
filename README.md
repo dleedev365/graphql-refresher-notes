@@ -15,4 +15,5 @@
   <li> <a href="./fundamentals/validation_and_execution.md">5. Validation & Execution</a></lid>
   <li> <a href="./fundamentals/response.md">6. Response</a></lid>
   <li> <a href="./fundamentals/introspection.md">7. Introspection</a></lid>
+  <li> <a href="./best_practices.md">8. Best Practices</a></lid>
 </ul>
