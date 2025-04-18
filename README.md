@@ -1,18 +1,18 @@
 ## What is GraphQL
 
 - A query language for API
-- Server-side runetime f or executing queries using a type system
+- Server-side runtime for executing queries using a type system
 - evolving without versioning
   - ex. `name: String @deprecated(reason: "Use 'fullName'.")`
 
 #### List of Content
 
 <ul>
-  <li> <a href="./schemas_and_types.md">Schemas and Types</a></lid>
-  <li> <a href="./queries.md">Queries</a></lid>
-  <li> <a href="./mutations.md">Mutation</a></lid>
-  <li> <a href="./subscriptions.md">Subscriptions</a></lid>
-  <li> <a href="./validation.md">Validation</a></lid>
-  <li> <a href="./response.md">Response</a></lid>
-  <li> <a href="./introspection.md">Introspection</a></lid>
+  <li> <a href="./fundamentals/schemas_and_types.md">1. Schemas and Types</a></lid>
+  <li> <a href="./fundamentals/queries.md">2. Queries</a></lid>
+  <li> <a href="./fundamentals/mutations.md">3. Mutation</a></lid>
+  <li> <a href="./fundamentals/subscriptions.md">4. Subscriptions</a></lid>
+  <li> <a href="./fundamentals/validation_and_execution.md">5. Validation & Execution</a></lid>
+  <li> <a href="./fundamentals/response.md">6. Response</a></lid>
+  <li> <a href="./fundamentals/introspection.md">7. Introspection</a></lid>
 </ul>
